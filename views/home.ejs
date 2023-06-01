@@ -1,0 +1,23 @@
+<%- include("partials/header") -%>
+
+<div class="big-img">
+  <img class="img-fluid" src="/img/home.jpg" alt="homeImg">
+</div>
+
+<div class="content-on-image">
+  <h1>Welcome to my Blog site !</h1>
+  <p><%= homeContent %></p>
+</div>
+
+<div class="container-fluid" id="post">
+    <% postContent.forEach(function(post){ %>
+      <h2><%= post.title %></h2>
+      <p><%= post.content.substring(0,150) + "..." %> <a href= "/posts/<%= post._id %>" >Read More</a></p>
+      <p id="nameNdate">
+        Posted by <%= post.name %> on <%= post.date %>
+      </p>
+      <hr>
+    <% }) %>
+<div/>
+
+<%- include("partials/footer") -%>

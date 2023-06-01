@@ -1,0 +1,32 @@
+<%- include("partials/header") -%>
+
+<div class="big-img">
+  <img class="img-fluid" src="/img/compose.jpg" alt="composeImg">
+</div>
+
+<div class="content-on-image">
+  <h1>Compose your own Blog !</h1>
+  <p>Write a suitable blog through which you can express your thoughs & views.</p>
+</div>
+
+<div class="container-fluid" id="compose">
+  <form action="/compose" class="p-5" method="post">
+    <div class="p-2">
+      <label>Enter your name : </label>
+      <input type="text" name="postName" class="form-control" placeholder="Enter name" required>
+    </div>
+    <div class="p-2">
+      <label>Enter blog title : </label>
+      <input type="text" name="postTitle" class="form-control" placeholder="Enter title" required>
+    </div>
+    <div class="p-2">
+      <label>Enter blog post content : </label>
+      <textarea name="postBody" rows="8" cols="20" class="form-control" placeholder="Enter content" required></textarea>
+    </div>
+    <div class="p-2 d-flex justify-content-center">
+      <button class="btn btn-outline-primary btn-lg" type="submit">Publish</button>
+    </div>
+  </form>
+</div>
+
+<%- include("partials/footer") -%>
