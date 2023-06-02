@@ -1,8 +1,20 @@
 <%- include("partials/header") -%>
 
-<h1><%= getTitle  %></h1>
-<p><%= getName %></p>
-<p><%= getDate %></p>
-<p><%= getContent %></p>
+<div class="container" id="openPost">
+  <div class="m-5">
+    <h1><%= getTitle %></h1>
+  </div>
+  <div class="row m-3">
+    <div class="col-6 d-flex justify-content-start">
+      <p><em>on <%= getDate %></em></p>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+      <p><em>by <%= getName %></em></p>
+    </div>
+  </div>
+  <div class="text-start m-3">
+      <p><%= getContent %></p>
+  </div>
+</div>
 
 <%- include("partials/footer") -%>

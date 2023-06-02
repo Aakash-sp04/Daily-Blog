@@ -1,0 +1,16 @@
+<%- include("partials/header") -%>
+
+<form action="/failure" method="post">
+  <div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+      <h1 class="display-1 fw-bold">400</h1>
+      <p class="fs-3"> <span class="text-danger">Opps!</span>Invalid request.</p>
+      <p class="lead">
+        Your email not subscribed to our site.
+      </p>
+      <button class="btn btn-outline-dark">Try again</button>
+    </div>
+  </div>
+</form>
+
+<%- include("partials/footer") -%>

@@ -2,10 +2,11 @@
     padding-top: 70px;
     padding-bottom: 70px;
 } */
-body{
+body {
   text-align: center;
 }
-hr{
+
+hr {
   margin-top: 50px;
   border-style: none;
   border-top-style: dashed;
@@ -13,69 +14,98 @@ hr{
   border-width: 4px;
   width: 100%;
 }
-textarea{
+
+textarea {
   resize: none;
 }
 
 /* For navbar */
-.navbar-header{
+.navbar-header {
   font-family: 'Pacifico', cursive;
 }
+
 .navbar {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    padding: 3%;
-    background-color: #808080;
-    font-size: 13px;
-    letter-spacing: 3px;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  padding: 3%;
+  background-color: #808080;
+  font-size: 13px;
+  letter-spacing: 3px;
 }
-.navbar-nav  li a:hover {
-    color:  #d9d9d9 !important;
+
+.navbar-nav li a:hover {
+  color: #d9d9d9 !important;
 }
-.navbar-nav  li a{
-    color: #fff;
+
+.navbar-nav li a {
+  color: #fff;
 }
 
 /* For background-image on all routes */
 .big-img {
   position: absolute;
+  z-index: -1;
   width: 100%;
   opacity: 0.6;
 }
-.content-on-image{
-  position: relative;
-  z-index: 1;
-  top: 250px;
+
+@media (min-width : 600px){
+  .content-on-image {
+    position: relative;
+    z-index: -1;
+    top: 270px;
+  }
 }
-.content-on-image h1{
+@media (max-width : 600px){
+  .content-on-image {
+    position: relative;
+    z-index: -1;
+    top: 100px;
+  }
+}
+@media (min-width : 600px) and (max-width : 1000px){
+  .content-on-image {
+    position: relative;
+    z-index: -1;
+    top: 200px;
+  }
+}
+
+.content-on-image h1 {
   line-height: 2;
-  font-family: sans-serif serif;
+  font-family: 'Kanit', sans-serif;
 }
-.content-on-image p{
+
+.content-on-image p {
   font-style: italic;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 /* Getting data all post */
-#post{
+#post {
   background-color: #fff;
   position: relative;
   margin-top: 40%;
   width: 100%;
   padding: 0px;
 }
-#post h2{
-  line-height: 3;
+
+#post h2 {
   font-weight: bold;
+  font-family: Playfair;
 }
+
 /* For date & name of each post */
-#nameNdate{
+#nameNdate {
   color: #808080;
   font-family: serif;
   font-style: italic;
 }
+
 /* New post to create */
-#compose{
+#compose {
   background-color: #fff;
   position: relative;
   margin-top: 40%;
@@ -84,43 +114,54 @@ textarea{
   text-align: left;
 }
 
-/* In about us, for personal name & photo */
-.intro h2{
-  font-family: fantasy;
+/* For reading post individuallly */
+#openPost {
+  background-color: #fff;
+  padding-top: 10%;
 }
-.intro img{
-  width:70%;
-  height:70%;
+
+/* In about us, for personal name & photo */
+.intro h3{
+  font-family: 'Carter One', cursive;
+  /* font-family: 'Abril Fatface', cursive; */
+  /* font-family: 'Montserrat', sans-serif; */
+}
+
+.intro img {
+  width: 70%;
+  height: 70%;
 }
 
 /* For footer */
-#foot{
-  padding : 0px;
+#foot {
+  padding: 0px;
 }
+
 .footer {
-	position: relative;
-	text-align: center;
-	bottom: 0;
-	width: 100%;
-	background-color: #00141a;
-  margin-top: 5%;
+  position: relative;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+  background-color: #00141a;
+  margin-top: 4%;
   padding: 30px;
 }
 
 /* For footer icons */
-.footer a{
+.footer a {
   padding: 10px;
   font-size: 20px;
   color: #fff;
 }
-.footer a:hover{
+
+.footer a:hover {
   color: blue;
 }
 
 /* For footer copyright */
 .footer p {
-	margin: 20px auto -2px;
+  margin: 20px auto -2px;
   padding-top: 20px;
-	font-size: 12px;
+  font-size: 12px;
   color: #adb5bd;
 }

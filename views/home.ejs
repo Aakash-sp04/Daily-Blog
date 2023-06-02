@@ -11,11 +11,17 @@
 
 <div class="container-fluid" id="post">
     <% postContent.forEach(function(post){ %>
-      <h2><%= post.title %></h2>
-      <p><%= post.content.substring(0,150) + "..." %> <a href= "/posts/<%= post._id %>" >Read More</a></p>
-      <p id="nameNdate">
-        Posted by <%= post.name %> on <%= post.date %>
-      </p>
+      <div class="mx-3 pt-4">
+        <h2><%= post.title %></h2>
+      </div>
+      <div class="mx-3">
+        <p id="nameNdate">
+          Posted by <%= post.name %> on <%= post.date %>
+        </p>
+      </div>
+      <div class="mx-4">
+        <p><%= post.content.substring(0,150) + "..." %> <a href= "/posts/<%= post._id %>" >Read More</a></p>
+      </div>
       <hr>
     <% }) %>
 <div/>
