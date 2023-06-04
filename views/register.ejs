@@ -60,15 +60,15 @@
           <form action="/register" method="POST">
             <div class="form-group px-3">
               <label for="username">Username</label>
-              <input type="text" class="form-control" name="username">
+              <input type="text" class="form-control" name="username" placeholder="Min 8 characters length" required>
             </div>
             <div class="form-group px-3">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="email">
+              <input type="email" class="form-control" name="email" placeholder="Min 10 characters length" required>
             </div>
             <div class="form-group px-3 py-2">
               <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
+              <input type="password" class="form-control" name="password" placeholder="Min 8 characters length" required>
             </div>
             <div class="form-group px-3 py-2 d-flex justify-content-center">
               <button type="submit" class="btn btn-dark ">Register</button>
