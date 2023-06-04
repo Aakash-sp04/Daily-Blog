@@ -8,10 +8,30 @@ const mongoose = require("mongoose");
 const request = require("request")
 const https = require("https")
 const moment = require ("moment")
+//Login & signup required modules
+const session = require("express-session");
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const findOrCreate = require('mongoose-findorcreate');
 
 const homeStartingContent = "A Proactive blog site where you find content that always enrich your knowledge & take you forward"
 const aboutContent = "Who I am & What I do ?";
 const contactContent = "Want to know about our upcoming daily blogs ? Fill out the form below to get subscribed to our g-mail service";
+
+const app = express();
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
+app.use(session({ //session Setup level-5
+  secret : "Our little secret",
+  resave : false,           //Forces the session to be saved back to the session store, even if the session was never modified during the request.
+  saveUninitialized : false //Choosing false is useful for implementing login sessions, reducing server storage usage,
+  //or complying with laws that require permission before setting a cookie.
+  //Choosing false will also help with race conditions where a client makes multiple parallel requests without a session.
+}));
+app.use(passport.initialize()); //Initialize passport
+app.use(passport.session());  //To use passport for setting up our session
 
 //Setting up the database
 mongoose.set('strictQuery', true);
@@ -24,28 +44,99 @@ const postSchema = new mongoose.Schema({
 })
 const Post = mongoose.model("Post", postSchema);
 
-const app = express();
-app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static("public"));
+const userSchema = new mongoose.Schema({
+  username : String,
+  email : String,
+  password : String,
+  googleId : String,
+  blog : [postSchema] //Subdocument i.e. Array of Objects
+})
+
+
+//NOTE:- To keep encrypt after schema creation & before actual obj. creation
+// userSchema.plugin(encrypt, {secret : process.env.SECRET, encryptedFields : ["password"]});
+userSchema.plugin(passportLocalMongoose); //Hash & Salt password in Level-5
+userSchema.plugin(findOrCreate);  //Level-6 OAuth findOrCreate lougin
+
+const User = mongoose.model("User", userSchema);
+passport.use(User.createStrategy());
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, {
+      id: user.id,
+      username: user.username,
+      picture: user.picture
+    });
+  });
+});
+
+passport.deserializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user);
+  });
+});
+//level-6 OAuth sign-in with google
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // console.log(profile);
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
 
 //Global array for stories all postTitle & postBody
 // let postArr = [];
 app.get("/", function(req, res){
   Post.find({}).then(function(posts){
-    res.render("home", {homeContent : homeStartingContent, postContent : posts});
+    res.render("home", {homeContent : homeStartingContent, postContent : posts, val : req.isAuthenticated()});
   });
   // console.log(postArr);
 })
+//Level-6 OAuth sign-in with Google
+app.get("/auth/google",
+  passport.authenticate('google', { scope: ["profile"] })
+);
+app.get("/auth/google/secrets",
+  passport.authenticate('google', { failureRedirect: "/login" }),
+  function(req, res) {
+    // Successful authentication, redirect to secrets.
+    res.redirect('/compose');
+});
+
+app.get("/login", function(req, res){
+  res.render("login", {val : req.isAuthenticated()});
+})
+app.get("/register", function(req, res){
+  res.render("register", {val : req.isAuthenticated()});
+})
 app.get("/about", function(req, res){
-  res.render("about", {aboutContent : aboutContent})
+  res.render("about", {aboutContent : aboutContent, val : req.isAuthenticated()})
 })
 //Here, we do subcription process of Mailchimp
 app.get("/contact", function(req, res){
-  res.render("contact", {contactContent : contactContent})
+  res.render("contact", {contactContent : contactContent, val : req.isAuthenticated()})
 })
 app.get("/compose", function(req, res){
-  res.render("compose")
+  if(req.isAuthenticated()){  //is user authenticate than redirect to compose
+    res.render("compose", {val : req.isAuthenticated()})
+  }else{
+    res.render("login", {val : req.isAuthenticated()})
+  }
+})
+app.get("/myblog", function(req, res){
+  User.findById(req.user.id).then(function(foundUser){
+    if(foundUser){
+      res.render("myblog", {postContent : foundUser.blog, val : req.isAuthenticated()});
+    }
+  }).catch(function(err){
+    console.log(err);
+  })
 })
 app.get("/success", function(req, res){
   res.render("success")
@@ -53,17 +144,60 @@ app.get("/success", function(req, res){
 app.get("/failure", function(req, res){
   res.render("failure")
 })
-
+app.get("/error", function(req, res){
+  res.render("error");
+})
 //Encorporating express routing parameters
 app.get("/posts/:postId", function(req, res){
   // console.log(req.params.postId);
   const requestedPostId = req.params.postId;
 
   Post.findOne({_id : requestedPostId}).then(function(foundPost){
-    res.render("post", {getName : foundPost.name, getTitle : foundPost.title, getContent : foundPost.content, getDate : foundPost.date});
+    res.render("post", {getName : foundPost.name, getTitle : foundPost.title, getContent : foundPost.content, getDate : foundPost.date, val : req.isAuthenticated()});
   })
 })
 
+app.get("/logout", function(req, res){
+  req.logout(function(err){ //To terminate a session Level-5 Cookie & Session
+    if(err){
+      console.log(err);
+    }else{
+      res.redirect("/");
+    }
+  });
+})
+
+app.post("/register", function(req, res){
+  //register() by-default function {columns to save in database}
+  // See in the above code we did not define our password in New user.
+  // Instead, we use the password with the User.Register() which is a passport-local-mongoose function
+  User.register({username : req.body.username, email: req.body.email}, req.body.password, function(err, user){
+    if(err){
+      console.log(err);
+      res.redirect("/register");
+    }else{
+      passport.authenticate("local", { failureRedirect: '/error' })(req, res, function(){
+        res.redirect("/compose");
+      })
+    }
+  })
+})
+app.post("/login", function(req, res){
+  const user = new User({
+    username : req.body.username,
+    password : req.body.password
+  })
+
+  req.login(user, function(err){
+    if(err){
+      console.log(err);
+    }else{
+      passport.authenticate("local", { failureRedirect: '/error' })(req, res, function(){ //{ failureRedirect: '/error' } if unauthorized user try to login
+        res.redirect("/compose");
+      })
+    }
+  })
+})
 app.post("/compose",function(req, res){
   //Get data from textfields using bodyParser
   // const posts = {
@@ -85,8 +219,16 @@ app.post("/compose",function(req, res){
     date : new Date().toLocaleDateString("en-US", options)
   });
   post.save();
-  //Then redirect to home page
-  res.redirect("/")
+
+  User.findById(req.user.id).then(function(foundUser){
+    if(foundUser){
+      foundUser.blog.push(post);  //Appending into array
+      foundUser.save();
+      res.redirect("/");  //Then redirect to home page
+    }
+  }).catch(function(err){
+    console.log(err);
+  })
 })
 
 //Here, we do subcription process of Mailchimp

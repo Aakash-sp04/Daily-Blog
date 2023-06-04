@@ -1,5 +1,51 @@
 <%- include("partials/header") -%>
 
+<nav class="navbar navbar-expand-sm">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <p class="navbar-brand">DAILY BLOG</p>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- 6 -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <ul class="navbar-nav fw-bold ms-auto">
+        <li class="nav-item p-2" id="home">
+          <a class="nav-link" href="/">HOME</a>
+        </li>
+        <% if (val) { %>
+          <li class="nav-item p-2" id="auth">
+            <a class="nav-link" href="/logout">LOG OUT</a>
+          </li>
+        <% } %>
+        <% if (!val) { %>
+          <li class="nav-item p-2" id="auth">
+            <a class="nav-link" href="/register">SIGN UP</a>
+          </li>
+        <% } %>
+        <li class="nav-item p-2" id="about">
+          <a class="nav-link" href="/about">ABOUT US</a>
+        </li>
+        <li class="nav-item p-2" id="composeBlog">
+          <a class="nav-link" href="/compose">COMPOSE BLOG</a>
+        </li>
+        <% if (val) { %>
+          <li class="nav-item p-2" id="myblog">
+            <a class="nav-link" href="/myblog">MY BLOGS</a>
+          </li>
+        <% } %>
+        <% if (!val) { %>
+          <li class="nav-item p-2" id="contact">
+            <a class="nav-link" href="/contact">CONTACT US</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <div class="big-img">
   <img class="img-fluid" src="/img/home.jpg" alt="homeImg">
 </div>
@@ -9,8 +55,9 @@
   <p><%= homeContent %></p>
 </div>
 
+<!-- slice().reverse() to show latest post first-->
 <div class="container-fluid" id="post">
-    <% postContent.forEach(function(post){ %>
+    <% postContent.slice().reverse().forEach(function(post){ %>
       <div class="mx-3 pt-4">
         <h2><%= post.title %></h2>
       </div>

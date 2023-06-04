@@ -15,6 +15,15 @@ hr {
   width: 100%;
 }
 
+/* For text within hr */
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+
 textarea {
   resize: none;
 }
@@ -32,6 +41,7 @@ textarea {
   background-color: #808080;
   font-size: 13px;
   letter-spacing: 3px;
+  top: 0px;
 }
 
 .navbar-nav li a:hover {
@@ -83,6 +93,36 @@ textarea {
   margin-right: 20px;
 }
 
+/* For login & signup page */
+/* For reading post individuallly */
+@media (min-width : 900px){
+  .container{
+    background-color: #fff;
+    margin-top: 200px;
+    margin-bottom: 100px;
+    text-align: left;
+    width: 60%;
+  }
+}
+@media (max-width : 600px){
+  .container {
+    background-color: #fff;
+    margin-top: 150px;
+    margin-bottom: 100px;
+    text-align: left;
+    width: 80%;
+  }
+}
+@media (min-width : 600px) and (max-width : 1000px){
+  .container{
+    background-color: #fff;
+    margin-top: 150px;
+    margin-bottom: 100px;
+    text-align: left;
+    width: 80%;
+  }
+}
+
 /* Getting data all post */
 #post {
   background-color: #fff;
@@ -112,12 +152,6 @@ textarea {
   width: 100%;
   padding: 0px;
   text-align: left;
-}
-
-/* For reading post individuallly */
-#openPost {
-  background-color: #fff;
-  padding-top: 10%;
 }
 
 /* In about us, for personal name & photo */
