@@ -37,23 +37,23 @@ app.use(passport.session()); //To use passport for setting up our session
 
 //Setting up the database
 mongoose.set('strictQuery', true);
-mongoose.connect("mongodb://127.0.0.1:27017/blogDB", {
+mongoose.connect("mongodb+srv://aakashspachchigar:Dhrutisp@cluster0.hssx3ey.mongodb.net/blogDB", {
   useNewUrlParser: true
 });
 const postSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
     min : 5
   },
   title: {
     type: String,
-    required: true
+    required: true,
     min : 10
   },
   content: {
     type: String,
-    required: true
+    required: true,
     min : 50
   },
   date: String
@@ -63,19 +63,16 @@ const Post = mongoose.model("Post", postSchema);
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
     min : 8
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
     min : 10
   },
   password: {
     type: String,
-    required: true
     min : 8
   },
   googleId: String,
