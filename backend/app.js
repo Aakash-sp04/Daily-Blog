@@ -20,11 +20,12 @@ const aboutContent = "Who I am & What I do ?";
 const contactContent = "Want to know about our upcoming daily blogs ? Fill out the form below to get subscribed to our g-mail service";
 
 const app = express();
+app.set('views','../frontend/views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(express.static("public"));
+app.use(express.static("../frontend/public"));
 app.use(session({ //session Setup level-5
   secret: "Our little secret",
   resave: false, //Forces the session to be saved back to the session store, even if the session was never modified during the request.
@@ -352,5 +353,6 @@ app.post("/failure", function(req, res) {
 })
 
 app.listen(3000, function() {
+  console.log(__dirname);
   console.log("Server started on port 3000");
 });
