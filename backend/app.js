@@ -148,14 +148,10 @@ app.get("/auth/google/secrets",
   });
 
 app.get("/login", function(req, res) {
-  res.render("login", {
-    val: req.isAuthenticated()
-  });
+  res.render("login");
 })
 app.get("/register", function(req, res) {
-  res.render("register", {
-    val: req.isAuthenticated()
-  });
+  res.render("register");
 })
 app.get("/about", function(req, res) {
   res.render("about", {
@@ -166,8 +162,7 @@ app.get("/about", function(req, res) {
 //Here, we do subcription process of Mailchimp
 app.get("/contact", function(req, res) {
   res.render("contact", {
-    contactContent: contactContent,
-    val: req.isAuthenticated()
+    contactContent: contactContent
   })
 })
 app.get("/compose", function(req, res) {
@@ -185,8 +180,7 @@ app.get("/myblog", function(req, res) {
   User.findById(req.user.id).then(function(foundUser) {
     if (foundUser) {
       res.render("myblog", {
-        postContent: foundUser.blog,
-        val: req.isAuthenticated()
+        postContent: foundUser.blog
       });
     }
   }).catch(function(err) {

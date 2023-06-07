@@ -15,32 +15,18 @@
         <li class="nav-item p-2" id="home">
           <a class="nav-link" href="/">HOME</a>
         </li>
-        <% if (val) { %>
-          <li class="nav-item p-2" id="auth">
-            <a class="nav-link" href="/logout">LOG OUT</a>
-          </li>
-        <% } %>
-        <% if (!val) { %>
-          <li class="nav-item p-2" id="auth">
-            <a class="nav-link" href="/register">SIGN UP</a>
-          </li>
-        <% } %>
+        <li class="nav-item p-2" id="auth">
+          <a class="nav-link" href="/register">SIGN UP</a>
+        </li>
         <li class="nav-item p-2" id="about">
           <a class="nav-link" href="/about">ABOUT US</a>
         </li>
         <li class="nav-item p-2" id="composeBlog">
           <a class="nav-link" href="/compose">COMPOSE BLOG</a>
         </li>
-        <% if (val) { %>
-          <li class="nav-item p-2" id="myblog">
-            <a class="nav-link" href="/myblog">MY BLOGS</a>
-          </li>
-        <% } %>
-        <% if (!val) { %>
-          <li class="nav-item p-2" id="contact">
-            <a class="nav-link" href="/contact">CONTACT US</a>
-          </li>
-        <% } %>
+        <li class="nav-item p-2" id="contact">
+          <a class="nav-link" href="/contact">CONTACT US</a>
+        </li>
       </ul>
     </div>
   </div>
