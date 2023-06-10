@@ -105,8 +105,8 @@ passport.deserializeUser(function(user, cb) {
 });
 //level-6 OAuth sign-in with google
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientID: "369764858373-0eorf53biqnpghua6ad2k4lu8fcl1au0.apps.googleusercontent.com",
+    clientSecret: "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",
     callbackURL: "http://localhost:3000/auth/google/secrets",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
